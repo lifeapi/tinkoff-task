@@ -6,7 +6,8 @@ import ru.tinkoff.task.entity.Application;
 
 public interface ApplicationRepository extends JpaRepository<Application, Long> {
 
-    @Query(value = "FROM Application WHERE clientId = :clientId AND created = (SELECT MAX (created) FROM Application WHERE clientId = :clientId)")
+    // we can use @Query and Pageable and it will be platform independent but more difficult for reading
+    @Query(value = "Select * FROM applications WHERE client_id = :clientId ORDER BY created DESC LIMIT 1",nativeQuery = true)
     Application getLastApplicationForClient(Long clientId);
 
 }
